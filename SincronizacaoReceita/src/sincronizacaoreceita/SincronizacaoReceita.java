@@ -16,8 +16,7 @@ public class SincronizacaoReceita {
     }
     public static void readFile() {
         try {
-            String folderPath = "C:\\Temp";
-            
+            String folderPath = "C:\\Temp";            
             BufferedReader reader = Files.newBufferedReader(Paths.get(folderPath, "servico.csv"));
             String linha;
             String csvDivisor = ";";
@@ -34,10 +33,7 @@ public class SincronizacaoReceita {
                     first = false;
                     FileUtils.addHeaderFile(linha, writer);
                 } else {
-                    boolean result = receitaService.atualizarConta(conta[0], FileUtils.formatAccount(conta[1]), FileUtils.convertDouble(conta[2]), conta[3]);
-                    System.out.println("Agencia: " + conta[0] + " Conta: " + FileUtils.formatAccount(conta[1]) +
-                            " Saldo: "+ FileUtils.convertDouble(conta[2]) + " Status: " + conta[3] + " Result: " + (result? "Succes":"Failure"));
-                    FileUtils.addCotentFile(linha, writer, result);
+                    executaReceitaService(writer, linha, receitaService, conta);
                 }
             }
 
@@ -50,4 +46,16 @@ public class SincronizacaoReceita {
         }
     }
     
+    public static void executaReceitaService(BufferedWriter writer, String linha, ReceitaService receitaService, String[] conta) throws Exception {    
+        try {
+            String contaFormat = FileUtils.formatAccount(conta[1]);
+            double saldo = FileUtils.convertDouble(conta[2]);
+            boolean result = receitaService.atualizarConta(conta[0], contaFormat, saldo, conta[3]);
+            System.out.println("Agencia: " + conta[0] + " Conta: " + contaFormat +
+                    " Saldo: "+ saldo + " Status: " + conta[3] + " Result: " + (result? "Succes":"Failure"));
+            FileUtils.addContentFile(linha, writer, result);
+        } catch (InterruptedException e) {
+            System.out.println("Erro ao enviar os dados ao receita service " + e);
+        }
+    }
 }

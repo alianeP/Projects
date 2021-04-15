@@ -27,7 +27,7 @@ class FileUtils {
         return contaFormat;
     }
 
-    public static void addCotentFile(String linha, BufferedWriter writer, boolean result) {
+    public static void addContentFile(String linha, BufferedWriter writer, boolean result) {
         try {
             StringBuilder bufSaida = new StringBuilder();
 
@@ -44,7 +44,7 @@ class FileUtils {
             StringBuilder newLine = new StringBuilder();
             writer.write(newLine.append(linha).append(";").append("result").append("\n").toString());
             writer.flush();
-            System.out.println("=============================Servico Receita=================================");
+            System.out.println("=============================Serviço Receita=================================");
             System.out.println("Processando arquivo aguarde...");
 
         } catch (IOException e ) {
